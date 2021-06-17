@@ -9,6 +9,7 @@ import Loading from './components/LoadingComponent';
 const { persistor, store } = ConfigureStore();
 
 export default function App() {
+  console.log("in App.js");
   return (
     <Provider store={store}>
       <PersistGate

@@ -1,4 +1,4 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { campsites } from './campsites';
@@ -6,6 +6,7 @@ import { comments } from './comments';
 import { promotions } from './promotions';
 import { partners } from './partners';
 import { favorites } from './favorites';
+import { pictures } from './pictures';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
@@ -21,7 +22,8 @@ export const ConfigureStore = () => {
             comments,
             partners,
             promotions,
-            favorites
+            favorites,
+            pictures
         }),
         applyMiddleware(thunk, logger)
     );

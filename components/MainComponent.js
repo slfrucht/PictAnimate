@@ -13,13 +13,14 @@ import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import SafeAreaView from "react-native-safe-area-view";
 import {connect} from "react-redux";
-import { fetchPromotions, fetchCampsites, fetchComments, fetchPartners } from "../redux/ActionCreators";
+import { fetchPromotions, fetchCampsites, fetchComments, fetchPartners, fetchPictures } from "../redux/ActionCreators";
 
 const mapDispatchToProps = {
     fetchPartners, 
     fetchPromotions,
     fetchCampsites,
-    fetchComments
+    fetchComments,
+    fetchPictures
 };
 
 const DirectoryNavigator = createStackNavigator(
@@ -306,6 +307,7 @@ class Main extends Component {
         this.props.fetchComments();
         this.props.fetchPromotions();
         this.props.fetchPartners();
+        this.props.fetchPictures();
     }
 
     render() {
