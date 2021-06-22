@@ -16,10 +16,10 @@ export const pictures = (state = { isLoading: true,
         case ActionTypes.SELECT_PICTURE:
             console.log("+++++++++selectecd pict of id: ", action.payload);
             let newState = [...state.pictures];
-            newState.forEach(picture => picture.selected = picture.id === action.payload ? true : false);
-            //console.log("newPictArray: ", JSON.stringify(newPictArray));
+            newState.forEach(picture => {
+                picture.selected = picture.id === action.payload ? true : false;
+            });
             return {...state, isLoading: false, errMess: null, pictures: newState};
-            //return state;
         case ActionTypes.ANIMATE_PICT:
             console.log("animating pict of id: ", action.payload);
             return state;

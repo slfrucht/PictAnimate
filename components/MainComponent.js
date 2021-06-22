@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Directory from "./DirectoryComponent";
 import CampsiteInfo from "./CampsiteInfoComponent";
+import ShowPicture from "./ShowPictureComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
 import About from "./AboutComponent";
@@ -36,7 +37,7 @@ const DirectoryNavigator = createStackNavigator(
                 />
             })
         },
-        CampsiteInfo: {screen: CampsiteInfo}
+        ShowPicture: {screen: ShowPicture}
     },
     {
         initialRouteName: "Directory",

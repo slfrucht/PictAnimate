@@ -30,7 +30,7 @@ function RenderItem(props) {
         );
 }
     if(item) {
-        console.log("in Home Component, item = " + JSON.stringify(item));
+        //console.log("in Home Component, item = " + JSON.stringify(item));
 
         return (
             <Card
