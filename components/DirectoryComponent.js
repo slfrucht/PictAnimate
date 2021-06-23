@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, View, Text } from "react-native";
+import { FlatList, View, Text, Dimensions, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Tile } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -19,6 +19,7 @@ const mapDispatchToProps = {
     selectPicture: pictureId => (selectPicture(pictureId))
 };
 
+const win = Dimensions.get("window");
 
 class Directory extends Component {
     constructor(props) {
@@ -84,23 +85,26 @@ class Directory extends Component {
         const { navigate } = this.props.navigation;
 
         const renderDirectoryItem = ({ item }) => {
-            //console.log("in Directory component, item = ", JSON.stringify(item));
 
             return (
-                <Animatable.View animation="fadeInRightBig" duration={2000}>
-                    <Tile
-                        title={item.name}
-                        onPress={() => {
-                            console.log("in onpress , item = ", JSON.stringify(item));
-
-                            this.selectImage(item.id, baseUrl + item.image);
-                            console.log("in onpress.2 , item = ", JSON.stringify(item));
-                            navigate("ShowPicture", { pictureId: item.id });
-                        }
-                        }
-                        imageSrc={{ uri: baseUrl + item.image }}
+                <Animatable.View  animation="fadeInRightBig" duration={2000}>
+                    <TouchableOpacity
+                                            onPress={() => {
+                                                console.log("in onpress , item = ", JSON.stringify(item));
+                    
+                                                this.selectImage(item.id, baseUrl + item.image);
+                                                console.log("in onpress.2 , item = ", JSON.stringify(item));
+                                                navigate("ShowPicture", { pictureId: item.id });
+                                            }
+                                            }
+                    
+                    >
+                    <Image
+                        style={styles.tile}
+                        source={{ uri: baseUrl + item.image}}
                     />
-                </Animatable.View>
+                    </TouchableOpacity>
+                 </Animatable.View>
             );
         };
         if (this.props.pictures.isLoading) {
@@ -115,9 +119,12 @@ class Directory extends Component {
                 </View>
             );
         }
+//            columnWrapperStyle={{margin:140, padding:10}}
 
         return (
-            <FlatList
+            <FlatList style={styles.container}
+                numColumns={2}
+                horizontal={false}
                 data={this.props.pictures.pictures}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
@@ -126,4 +133,20 @@ class Directory extends Component {
 
     }
 }
+const styles = StyleSheet.create({
+    container: {
+      flex: 2,
+      padding: 20,
+      flexDirection: "row",
+      flexWrap: "wrap",  
+      
+  },
+    tile: {
+        padding: 10,
+        margin: 10,
+        width: win.width * .4,
+        height: win.height/3
+     }
+  });
+  
 export default connect(mapStateToProps, mapDispatchToProps)(Directory);

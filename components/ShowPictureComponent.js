@@ -63,7 +63,7 @@ function RenderPicture(props) {
                 title={picture.name}
                 titleStyle={{textAlign: "center"}}
                 imageSrc={{uri: baseUrl + picture.image}}
-                height={550}>
+                height={win.height * .75}>
 
                </Tile>
 
