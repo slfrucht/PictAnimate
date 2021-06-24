@@ -240,16 +240,4 @@ export const selectPict = pictureId => ({
     payload: pictureId
 });
 
-export const animatePicture = pictureId => dispatch => {
-    setTimeout(() => {
-        dispatch(animatePict(pictureId));
-    }, 2000);
-};
-
-export const animatePict = pictureId => ({
-    type: ActionTypes.ANIMATE_PICTURE, 
-    payload: pictureId
-});
-
-
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nucampsite",
-    "slug": "nucampsite",
+    "name": "pictanimate",
+    "slug": "pictanimate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

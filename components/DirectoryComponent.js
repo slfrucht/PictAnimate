@@ -26,6 +26,7 @@ class Directory extends Component {
         super(props);
 
         this.state = {
+            facePicts:[],
             faces: [],
             image: null
         };
@@ -34,10 +35,22 @@ class Directory extends Component {
         this.detectFaces = this.detectFaces.bind(this);
 
     }
+    componentDidMount() {
+        this.setFacePicts();
+    }
+
     static navigationOptions = {
         title: "Directory"
     };
 
+    setFacePicts() {
+        const picts = [...this.props.pictures.pictures];
+        picts.shift();
+        //console.log("picts: ", JSON.stringify(picts));
+        //console.log("shifted picts: ", JSON.stringify(picts.shift()));
+
+        this.setState({facePicts : picts});
+    }
     selectImage(id, uri) {
         this.detectFaces(uri);
         console.log("detected faces in select image: ", JSON.stringify(this.state.faces));
@@ -89,15 +102,12 @@ class Directory extends Component {
             return (
                 <Animatable.View  animation="fadeInRightBig" duration={2000}>
                     <TouchableOpacity
-                                            onPress={() => {
-                                                console.log("in onpress , item = ", JSON.stringify(item));
-                    
-                                                this.selectImage(item.id, baseUrl + item.image);
-                                                console.log("in onpress.2 , item = ", JSON.stringify(item));
-                                                navigate("ShowPicture", { pictureId: item.id });
-                                            }
-                                            }
-                    
+                        onPress={() => {
+                        this.selectImage(item.id, baseUrl + item.image);
+                        console.log("in onpress.2 , item = ", JSON.stringify(item));
+                        navigate("ShowPicture", { pictureId: item.id });
+                        }
+                    }
                     >
                     <Image
                         style={styles.tile}
@@ -125,7 +135,7 @@ class Directory extends Component {
             <FlatList style={styles.container}
                 numColumns={2}
                 horizontal={false}
-                data={this.props.pictures.pictures}
+                data={this.state.facePicts}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
             />

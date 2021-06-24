@@ -5,7 +5,6 @@ import ShowPicture from "./ShowPictureComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
 import About from "./AboutComponent";
-import Reservation from "./ReservationComponent";
 import Favorites from "./FavoritesComponent";
 import {View, Platform, StyleSheet, Text, ScrollView, Image } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
@@ -54,6 +53,31 @@ const DirectoryNavigator = createStackNavigator(
 
 );
 
+const ShowPictureNavigator = createStackNavigator(
+    {
+        ShowPicture: {screen: ShowPicture}
+    },
+    {
+        defaultNavigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: "#5637DD"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+                color:"#fff"
+            },
+            headerLeft: <Icon
+            name="home"
+            type="font-awesome"
+            iconStyle={styles.stackIcon}
+            onPress={() => navigation.toggleDrawer()}
+            initialParams={{ pictureId: 0 }}
+            />
+
+        })
+    }
+
+);
 const HomeNavigator = createStackNavigator(
     {
         Home: {screen: Home}
@@ -127,30 +151,7 @@ const ContactNavigator = createStackNavigator(
     }
 
 );
-const ReservationNavigator = createStackNavigator(
-    {
-        Reservation: {screen: Reservation}
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: "#5637DD"
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-                color:"#fff"
-            },
-            headerLeft: <Icon
-            name="tree"
-            type="font-awesome"
-            iconStyle={styles.stackIcon}
-            onPress={() => navigation.toggleDrawer()}
-            />
 
-        })
-    }
-
-);
 const FavoritesNavigator = createStackNavigator(
     {
         Favorites: {screen: Favorites}
@@ -230,16 +231,17 @@ const MainNavigator = createDrawerNavigator(
             }
 
         },
-        Reservation: {
-            screen: ReservationNavigator,
+        ShowPicture: {
+            screen: ShowPictureNavigator,
             navigationOptions: {
-                drawerLabel: "Reserve Campsite",
+                drawerLabel: "Display Picture",
                 drawerIcon: ({tintColor}) => (
                     <Icon
                     name="tree"
                     type="font-awesome"
                     size={24}
                     color={tintColor}
+                    initialParams={{ pictureId: 0 }}
                     />
                 )
             }
@@ -295,7 +297,8 @@ const MainNavigator = createDrawerNavigator(
     },
     {
         drawerBackgroundColor: "#CEC8FF",
-        contentComponent: CustomDrawerContentComponent
+        contentComponent: CustomDrawerContentComponent,
+        initialRouteName:"ShowPicture"
     }
 );
 

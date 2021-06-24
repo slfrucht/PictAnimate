@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import {Text, View, ScrollView, Dimensions, Modal, Button, StyleSheet, Alert, PanResponder} from "react-native";
-import {Tile, Icon, Rating, Input} from "react-native-elements";
+import { Text, View, TouchableOpacity, Dimensions, Modal, Button, StyleSheet, Alert, PanResponder } from "react-native";
+import { Tile, Icon, Rating, Input, withTheme } from "react-native-elements";
 import { connect } from "react-redux";
-import { baseUrl} from "../shared/baseUrl";
+import { baseUrl } from "../shared/baseUrl";
 import { animatePicture } from "../redux/ActionCreators";
 import * as Animatable from "react-native-animatable";
 import SvgComponent from "./SvgComponent";
@@ -13,29 +13,42 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = {
-    animatePicture: pictureId => (animatePicture(pictureId)),
-};
-
 const win = Dimensions.get("window");
 
+function RenderSvg(props) {
+    const { pictureId } = props;
+    if (pictureId > 0) {
+        return (
+            <View>
+                <SvgComponent pictureId={pictureId} />
+            </View>
+
+        );
+    }
+    else {
+        return (
+            <View style={styles.rectangle} />
+        );
+    }
+}
+
 function RenderPicture(props) {
-    const {picture} = props;
+    const { picture } = props;
 
     const view = React.createRef();
 
-    const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    const recognizeDrag = ({ dx }) => (dx < -200) ? true : false;
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderGrant: () => {
             view.current.rubberBand(1000)
-            .then(endState => console.log(endState.finished ? "finished" : "canceled"));
+                .then(endState => console.log(endState.finished ? "finished" : "canceled"));
 
         },
         onPanResponderEnd: (e, gestureState) => {
             console.log("gesture end: ", gestureState);
-            if(recognizeDrag(gestureState)) {
+            if (recognizeDrag(gestureState)) {
                 Alert.alert(
                     "Are you sure you want to animate" + picture.name + "?",
                     [
@@ -46,7 +59,7 @@ function RenderPicture(props) {
                         },
                         {
                             text: "OK",
-                            onPress: () =>  props.animatePict()
+                            onPress: () => props.animatePict()
                         }
                     ],
                     { cancellable: false }
@@ -56,33 +69,40 @@ function RenderPicture(props) {
         }
     });
 
-        if(picture) {
-            return(
-                <View>
-                <Tile 
-                title={picture.name}
-                titleStyle={{textAlign: "center"}}
-                imageSrc={{uri: baseUrl + picture.image}}
-                height={win.height * .75}>
+    if (picture) {
+        return (
+            <View>
 
-               </Tile>
+                <Tile
+                    title={picture.name}
+                    titleStyle={{ textAlign: "center" }}
+                    imageSrc={{ uri: baseUrl + picture.image }}
+                    height={win.height * .75}>
 
-                </View>
-            )
-        }
-        return <View />;
+                </Tile>
+
+            </View>
+        )
+    }
+    return <View />;
 }
 
 class ShowPicture extends Component {
     constructor(props) {
         super(props);
 
-    }
+        this.state = {
+            pictId: 0
+        };
 
-    animatePict(pictureId) {
-        this.props.animatePicture(pictureId);
     }
+    componentDidMount() {
+        console.log("in show picture pict = ", this.props.navigation.getParam("pictureId"))
+        const id = this.props.navigation.getParam("pictureId");
+        const pictureId = id ? id : 0;
+        this.setState({ pictId: pictureId });
 
+    }
 
     static navigationOptions = {
         title: "Show Picture"
@@ -90,22 +110,30 @@ class ShowPicture extends Component {
 
 
     render() {
-        const pictureId = this.props.navigation.getParam("pictureId");
+        const { navigate } = this.props.navigation;
+        const pictureId = this.state.pictId;
         const picture = this.props.pictures.pictures.filter(picture => picture.id === pictureId)[0];
- 
+        //console.log("in show picture pictureId = " + pictureId);
+        //console.log("in show picture picture.id = " + picture.id);
+
         return (
-            <View opacity={0.75}>                
-            <View style={{zIndex:10}}>
-            <SvgComponent style={{zIndex:10}} />
-            </View>
+            <View>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigate("Directory");
+                    }
+                    }>
+
+                    <View style={{ zIndex: 10 }}>
+                        <RenderSvg pictureId={pictureId} />
+                    </View>
 
 
-                <View style={{position:"absolute", zIndex:2}}>
-                <RenderPicture picture={picture}   
-                animatePict={() => this.animatePict(pictureId)}
-                />
-                </View>
+                    <View style={{ position: "absolute", zIndex: 2 }}>
+                        <RenderPicture picture={picture} />
+                    </View>
 
+                </TouchableOpacity>
 
             </View>
         );
@@ -113,7 +141,7 @@ class ShowPicture extends Component {
 
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
     cardRow: {
         alignItems: "center",
         justifyContent: "center",
@@ -133,7 +161,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 0,
         top: 0
+    },
+    rectangle: {
+        width: "100%",
+        height: "100%",
+        color: "red",
+        opacity:.5
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowPicture);
+export default connect(mapStateToProps)(ShowPicture);

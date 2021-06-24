@@ -19,10 +19,14 @@ class SvgComponent extends Component {
     }
 
     componentDidMount() {
+        console.log("in svg componentDidMount, props = " + JSON.stringify(this.props));
 
-        const t = setInterval(this.manageTimer, 15);
-        console.log("in svg componentDidMount, t = " + t);
-        this.setState({ timer:t });
+        if(this.props.pictureId > 0) {
+            const t = setInterval(this.manageTimer, 15);
+            console.log("in svg componentDidMount, t = " + t);
+            this.setState({ timer:t });
+        }
+
     }
 
     componentWillUnmount() {
