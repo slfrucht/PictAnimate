@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FlatList, View, Text, Dimensions, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Tile } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
@@ -11,7 +10,6 @@ import * as Animatable from "react-native-animatable";
 
 const mapStateToProps = state => {
     return {
-        campsites: state.campsites,
         pictures: state.pictures
     };
 };
@@ -40,14 +38,12 @@ class Directory extends Component {
     }
 
     static navigationOptions = {
-        title: "Directory"
+        title: "Photo Gallery"
     };
 
     setFacePicts() {
         const picts = [...this.props.pictures.pictures];
         picts.shift();
-        //console.log("picts: ", JSON.stringify(picts));
-        //console.log("shifted picts: ", JSON.stringify(picts.shift()));
 
         this.setState({facePicts : picts});
     }

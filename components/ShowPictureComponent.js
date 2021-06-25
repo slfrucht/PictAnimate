@@ -3,8 +3,6 @@ import { Text, View, TouchableOpacity, Dimensions, Modal, Button, StyleSheet, Al
 import { Tile, Icon, Rating, Input, withTheme } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
-import { animatePicture } from "../redux/ActionCreators";
-import * as Animatable from "react-native-animatable";
 import SvgComponent from "./SvgComponent";
 
 const mapStateToProps = state => {
@@ -35,39 +33,6 @@ function RenderSvg(props) {
 function RenderPicture(props) {
     const { picture } = props;
 
-    const view = React.createRef();
-
-    const recognizeDrag = ({ dx }) => (dx < -200) ? true : false;
-
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderGrant: () => {
-            view.current.rubberBand(1000)
-                .then(endState => console.log(endState.finished ? "finished" : "canceled"));
-
-        },
-        onPanResponderEnd: (e, gestureState) => {
-            console.log("gesture end: ", gestureState);
-            if (recognizeDrag(gestureState)) {
-                Alert.alert(
-                    "Are you sure you want to animate" + picture.name + "?",
-                    [
-                        {
-                            text: "Cancel",
-                            style: "cancel",
-                            onPress: () => console.log("Cancel pressed")
-                        },
-                        {
-                            text: "OK",
-                            onPress: () => props.animatePict()
-                        }
-                    ],
-                    { cancellable: false }
-                )
-            }
-            return true;
-        }
-    });
 
     if (picture) {
         return (
@@ -105,7 +70,7 @@ class ShowPicture extends Component {
     }
 
     static navigationOptions = {
-        title: "Show Picture"
+        title: "Display Picture"
     };
 
 
@@ -113,8 +78,6 @@ class ShowPicture extends Component {
         const { navigate } = this.props.navigation;
         const pictureId = this.state.pictId;
         const picture = this.props.pictures.pictures.filter(picture => picture.id === pictureId)[0];
-        //console.log("in show picture pictureId = " + pictureId);
-        //console.log("in show picture picture.id = " + picture.id);
 
         return (
             <View>

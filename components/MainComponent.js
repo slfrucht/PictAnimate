@@ -1,11 +1,6 @@
 import React, {Component} from "react";
 import Directory from "./DirectoryComponent";
-import CampsiteInfo from "./CampsiteInfoComponent";
 import ShowPicture from "./ShowPictureComponent";
-import Home from "./HomeComponent";
-import Contact from "./ContactComponent";
-import About from "./AboutComponent";
-import Favorites from "./FavoritesComponent";
 import {View, Platform, StyleSheet, Text, ScrollView, Image } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
@@ -13,13 +8,9 @@ import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import SafeAreaView from "react-native-safe-area-view";
 import {connect} from "react-redux";
-import { fetchPromotions, fetchCampsites, fetchComments, fetchPartners, fetchPictures } from "../redux/ActionCreators";
+import { fetchPictures } from "../redux/ActionCreators";
 
 const mapDispatchToProps = {
-    fetchPartners, 
-    fetchPromotions,
-    fetchCampsites,
-    fetchComments,
     fetchPictures
 };
 
@@ -78,104 +69,6 @@ const ShowPictureNavigator = createStackNavigator(
     }
 
 );
-const HomeNavigator = createStackNavigator(
-    {
-        Home: {screen: Home}
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: "#5637DD"
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-                color:"#fff"
-            },
-            headerLeft: <Icon
-            name="home"
-            type="font-awesome"
-            iconStyle={styles.stackIcon}
-            onPress={() => navigation.toggleDrawer()}
-            />
-
-        })
-    }
-
-);
-
-const AboutNavigator = createStackNavigator(
-    {
-        About: {screen: About}
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: "#5637DD"
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-                color:"#fff"
-            },
-            headerLeft: <Icon
-            name="info-circle"
-            type="font-awesome"
-            iconStyle={styles.stackIcon}
-            onPress={() => navigation.toggleDrawer()}
-        />
-
-        })
-    }
-
-);
-const ContactNavigator = createStackNavigator(
-    {
-        Contact: {screen: Contact}
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: "#5637DD"
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-                color:"#fff"
-            },
-            headerLeft: <Icon
-            name="address-card"
-            type="font-awesome"
-            iconStyle={styles.stackIcon}
-            onPress={() => navigation.toggleDrawer()}
-            />
-
-        })
-    }
-
-);
-
-const FavoritesNavigator = createStackNavigator(
-    {
-        Favorites: {screen: Favorites}
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: "#5637DD"
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-                color:"#fff"
-            },
-            headerLeft: <Icon
-            name="heart"
-            type="font-awesome"
-            iconStyle={styles.stackIcon}
-            onPress={() => navigation.toggleDrawer()}
-            />
-
-        })
-    }
-
-);
 
 
 
@@ -204,22 +97,10 @@ const CustomDrawerContentComponent = props => (
 
 const MainNavigator = createDrawerNavigator(
     {
-        Home: {
-            screen: HomeNavigator,
-            navigationOptions: {
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                    name="home"
-                    type="font-awesome"
-                    size={24}
-                    color={tintColor}
-                    />
-                )
-            }
-        },
         Directory: {
             screen: DirectoryNavigator,
             navigationOptions: {
+                drawerLabel: "Photo Gallery",
                 drawerIcon: ({tintColor}) => (
                     <Icon
                     name="list"
@@ -247,53 +128,7 @@ const MainNavigator = createDrawerNavigator(
             }
 
         },
-        Favorites: {
-            screen: FavoritesNavigator,
-            navigationOptions: {
-                drawerLabel: "My Favorites",
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                    name="heart"
-                    type="font-awesome"
-                    size={24}
-                    color={tintColor}
-                    />
-                )
-            }
 
-        },
-
-        About: {
-            screen: AboutNavigator,
-            navigationOptions: {
-                drawerLabel: "About Us",
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                    name="info-circle"
-                    type="font-awesome"
-                    size={24}
-                    color={tintColor}
-                    />
-                )
-            }
-
-        },
-
-        Contact: {
-            screen: ContactNavigator,
-            navigationOptions: {
-                drawerLabel: "Contact Us",
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                    name="address-card"
-                    type="font-awesome"
-                    size={24}
-                    color={tintColor}
-                    />
-                )
-            }
-
-        }
     },
     {
         drawerBackgroundColor: "#CEC8FF",
@@ -307,10 +142,6 @@ const AppNavigator = createAppContainer(MainNavigator);
 class Main extends Component {
 
     componentDidMount() {
-        this.props.fetchCampsites();
-        this.props.fetchComments();
-        this.props.fetchPromotions();
-        this.props.fetchPartners();
         this.props.fetchPictures();
     }
 

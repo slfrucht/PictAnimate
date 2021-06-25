@@ -20,10 +20,8 @@ export const pictures = (state = { isLoading: true,
                 picture.selected = picture.id === action.payload ? true : false;
             });
             return {...state, isLoading: false, errMess: null, pictures: newState};
-        case ActionTypes.ANIMATE_PICT:
-            console.log("animating pict of id: ", action.payload);
-            return state;
-                    default:
+
+        default:
             return state;
       }
 };
